@@ -1153,4 +1153,73 @@ function getQueryString(key) {
     var result = window.location.search.substr(1).match(reg);
     return result ? decodeURIComponent(result[2]) : null;
 }
+
+// 分页基本显示逻辑
+function showPages(page, total) {
+  var str = page + '';
+  for (var i = 1; i <= 3; i++) {
+      if (page - i > 1) {
+          str = page - i + ' ' + str;
+      }
+      if (page + i < total) {
+          str = str + ' ' + (page + i);
+      }
+  }
+  if (page - 4 > 1) {
+      str = '... ' + str;
+  }
+  if (page > 1) {
+      str = '上一页 ' + 1 + ' ' + str;
+  }
+  if (page + 4 < total) {
+      str = str + ' ...';
+  }
+  if (page < total) {
+      str = str + ' ' + total + ' 下一页';
+  }
+  return str;
+}
+// 测试打印
+var total = 12;  
+for (var i = 1; i <= total; i++) {  
+    var ret = showPages(i, total);
+    console.log(ret);
+}
+// 分页基本代码（html标签不完整）参考
+function showPageCommon(config) {  
+    return function (page, total) {
+        var str = '<a class="' + config.color + '">' + page + '</a>';
+        for (var i = 1; i <= 3; i++) {
+            if (page - i > 1) {
+                str = '<a>' + (page - i) + '</a> ' + str;
+            }
+            if (page + i < total) {
+                str = str + ' ' + '<a>' + (page + i) + '</a>';
+            }
+        }
+        if (page - 4 > 1) {
+            str = '... ' + str;
+        }
+        if (page > 1) {
+            str = '上一页 ' + 1 + ' ' + str;
+        }
+        if (page + 4 < total) {
+            str = str + ' ...';
+        }
+        if (page < total) {
+            str = str + ' ' + total + ' 下一页';
+        }
+        return str;
+    }
+}
+var showPages = showPageCommon({  
+    color: 'red'
+});
+// 测试打印
+var total = 12;  
+for (var i = 1; i <= total; i++) {  
+    var ret = showPages(i, total);
+    console.log(ret);
+    document.getElementsByTagName('div')[i].innerHTML = ret;
+}
 // ================================= MY E ====================================
