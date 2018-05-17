@@ -1222,4 +1222,41 @@ for (var i = 1; i <= total; i++) {
     console.log(ret);
     document.getElementsByTagName('div')[i].innerHTML = ret;
 }
+
+/**
+ * html字符串 转义 字符串
+ * @param  {[string]}   html      [html字符串]
+ */
+function escape(html){
+    return String(html||'').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+        .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+}
+
+/**
+ * 判断是否支持css3的某属性
+ * @param  {[string]}   html      [css3属性]
+ */
+function supportCss3(style) {
+        var prefix = ['webkit', 'Moz', 'ms', 'o'],
+            i,
+            humpString = [],
+            htmlStyle = document.documentElement.style,
+            _toHumb = function (string) {
+                return string.replace(/-(\w)/g, function ($0, $1) {
+                    return $1.toUpperCase();
+                });
+            };
+
+        for (i in prefix)
+            humpString.push(_toHumb(prefix[i] + '-' + style));
+
+        humpString.push(_toHumb(style));
+
+        for (i in humpString)
+            if (humpString[i] in htmlStyle) return true;
+
+        return false;
+    }
+//用法
+console.log(supportCss3('box-shadow'));  //如果支持 box-show 就返回true， 否则返回false
 // ================================= MY E ====================================
